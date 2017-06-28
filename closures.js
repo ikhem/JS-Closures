@@ -172,7 +172,6 @@ var module = (function() {
 module.publicMethod();
 
 
-
 /******************************************************************************\
  #PROBLEM-07
  \******************************************************************************/
@@ -187,15 +186,20 @@ var allUsers = ["Tom", "Dick", "Harry", "Anne", "Quinton", "Katie", "Mary"];
 
 function findPotentialFriends(existingFriends) {
   
-  return function(){
-    return (existingFriends.includes(friends))
+  return function(friend){
+    if(existingFriends.includes(friend)){
+      return false
+    }
+    else{
+      return true
+    }
   }
 
 }
 
 var isNotAFriend = findPotentialFriends( friends );
-// isNotAFriend(allUsers[0]); // false
-// isNotAFriend(secondLevelFriends[2]); // true
+isNotAFriend(allUsers[0]); // false
+isNotAFriend(secondLevelFriends[2]); // true
 
 
 /******************************************************************************\
@@ -205,8 +209,8 @@ var isNotAFriend = findPotentialFriends( friends );
 method, find all potential second level friends as well as potential friends
 from allUsers. */
 
-var potentialSecondLevelFriends = "?";
-var allPotentialFriends = "?";
+var potentialSecondLevelFriends = secondLevelFriends.filter(findPotentialFriends(friends));
+var allPotentialFriends = allUsers.filter(findPotentialFriends(friends));
 
 
 /******************************************************************************\
@@ -229,12 +233,15 @@ to 5. What we need to do is console.log(i) so that it logs like so:
  Fix the code below to log the desired output.
  */
 
+function cb(index){
+    return () => console.log(index) 
+}
+
 function timeOutCounter() {
+
   for (var i = 0; i <= 5; i++) {
-    var j = i;
-    setTimeout(function() {
-    	console.log(j)
-	}, j * 1000)
+    setTimeout(cb(i), i * 1000)
   }
 }
+
 timeOutCounter();
